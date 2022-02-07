@@ -20,30 +20,32 @@ import (
 // backend.
 type OracleProvider struct {
 	// Auth configures how secret-manager authenticates with the Oracle Vault.
-	Auth OracleAuth `json:"auth"`
-
-	// User is an access OCID specific to the account.
-	User string `json:"user,omitempty"`
+	// If empty, use the instance principal, otherwise the user credentials specified in Auth.
+	// +optional
+	Auth *OracleAuth `json:"auth,omitempty"`
 
 	// Tenancy is the tenancy OCID where secret is located.
-	Tenancy string `json:"tenancy,omitempty"`
+	Tenancy string `json:"tenancy"`
 
 	// Region is the region where secret is located.
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
 
 	// Vault is the vault's OCID of the specific vault where secret is located.
-	Vault string `json:"vault,omitempty"`
+	Vault string `json:"vault"`
 }
 
 type OracleAuth struct {
+	// User is an access OCID specific to the account.
+	User string `json:"user"`
+
 	// SecretRef to pass through sensitive information.
 	SecretRef OracleSecretRef `json:"secretRef"`
 }
 
 type OracleSecretRef struct {
 	// PrivateKey is the user's API Signing Key in PEM format, used for authentication.
-	PrivateKey esmeta.SecretKeySelector `json:"privatekey,omitempty"`
+	PrivateKey esmeta.SecretKeySelector `json:"privatekey"`
 
 	// Fingerprint is the fingerprint of the API private key.
-	Fingerprint esmeta.SecretKeySelector `json:"fingerprint,omitempty"`
+	Fingerprint esmeta.SecretKeySelector `json:"fingerprint"`
 }
